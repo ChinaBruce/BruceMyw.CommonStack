@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 
 [assembly: AssemblyCompany("Bruce")]
-[assembly: AssemblyCopyright("Copyright ©Bruce 2016")]
+[assembly: AssemblyCopyright("Copyright ©Bruce 2017")]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
