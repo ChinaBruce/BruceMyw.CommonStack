@@ -12,17 +12,17 @@ using Stack.Common;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace System//Stack.Common.Extension
+namespace System
 {
     /// <summary>
-    /// StringExtension
+    /// String 扩展
     /// </summary>
     public static class StringExtension
     {
         #region Methods
 
         /// <summary>
-        /// reverse string
+        /// 反转字符串里的元素
         /// </summary>
         /// <param name="srcStr"></param>
         /// <returns></returns>
@@ -34,18 +34,29 @@ namespace System//Stack.Common.Extension
         }
 
         /// <summary>
-        /// Get count of char in a string
+        /// 获取字符c 在字符串里出现的个数
         /// </summary>
         /// <param name="src"></param>
         /// <param name="c"></param>
         /// <returns></returns>
         public static int IncludeCount(this string src, char c)
         {
-            return Regex.Matches(src, c.ToString()).Count;
+            return src.IncludeCount(c.ToString());
         }
 
         /// <summary>
-        /// Swap char
+        /// 获取字符串c 在字符串里出现的个数
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static int IncludeCount(this string src, string c)
+        {
+            return Regex.Matches(src, c).Count;
+        }
+
+        /// <summary>
+        /// 交换字符串里任意两个字符的位置
         /// </summary>
         /// <param name="srcStr"></param>
         /// <param name="p1"></param>
@@ -65,7 +76,7 @@ namespace System//Stack.Common.Extension
         }
 
         /// <summary>
-        /// 
+        /// 移除字符串里所有的空格
         /// </summary>
         /// <param name="srcStr"></param>
         /// <returns></returns>
@@ -284,6 +295,54 @@ namespace System//Stack.Common.Extension
             return output.ToString();
         }
 
+        /// <summary>
+        /// SQL防注入
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string SqlFilte(this string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+            //单引号替换成两个单引号
+            input = input.Replace("'", "''");
+            input = input.Replace(";", "；");
+            input = input.Replace("(", "（");
+            input = input.Replace(")", "）");
+            input = input.Replace(",", "，");
+            input = input.Replace("?", "？");
+            input = input.Replace("<", "＜");
+            input = input.Replace(">", "＞");
+            input = input.Replace("@", "＠");
+            input = input.Replace("=", "＝");
+            input = input.Replace("+", "＋");
+            input = input.Replace("*", "＊");
+            input = input.Replace("&", "＆");
+            input = input.Replace("#", "＃");
+            input = input.Replace("%", "％");
+            input = input.Replace("$", "￥");
+            //防止16进制注入
+            input = input.Replace("0x", "0 x");
+            return input;
+        }
+
+        /// <summary>
+        /// 将传入的字符串中间部分字符替换成特殊字符
+        /// </summary>
+        /// <param name="input">需要替换的字符串</param>
+        /// <param name="startLen">前保留长度</param>
+        /// <param name="endLen">尾保留长度</param>
+        /// <param name="replaceChar">特殊字符</param>
+        /// <returns>被特殊字符替换的字符串</returns>
+        public static string ReplaceWithSpecialChar(this string input, int startLen = 4, int endLen = 4, char specialChar = '*')
+        {
+            if (input.Length == 0 || startLen > input.Length || endLen > input.Length || startLen + endLen > input.Length || startLen < 0 || endLen < 0)
+                return input;
+
+            var specialCharLength = input.Length - startLen - endLen;
+
+            return input.Substring(0, startLen) + new string(specialChar, specialCharLength) + input.Substring(input.Length - endLen);           
+        }
         #endregion
 
         #region Format validate

@@ -9,7 +9,7 @@
 *****************************************************/
 
 
-namespace System//Stack.Common.Extension
+namespace System
 {
     /// <summary>
     /// BooleanExtension

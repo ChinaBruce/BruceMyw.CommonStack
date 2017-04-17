@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace System//Stack.Common.Extension
+namespace System
 {
     /// <summary>
     /// DictionaryExtension
